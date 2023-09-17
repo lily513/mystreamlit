@@ -17,6 +17,17 @@ import streamlit as st
 
 st.title("ChatGPT-like clone")
 
+if "password" not in st.session_state:
+    with st.form("password"):
+        password=st.text_input("password",type="password")
+        if st.form_submit_button("submit"):
+            if password==st.secrets["PASSWORD"]:
+                st.session_state.password=password
+            else:
+                st.error("password incorrect")
+               
+            
+
 openai.api_key = st.secrets["OPENAI_KEY"]
 
 if "openai_model" not in st.session_state:
