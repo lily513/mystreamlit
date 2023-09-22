@@ -22,7 +22,7 @@ if "pwd" not in st.session_state:
         password=st.text_input("password",type="password")
         if st.form_submit_button("submit"):
             if password==st.secrets["PASSWORD"]:
-                st.session_state.pwd=password #need to check if pwd works instead of password.
+                st.session_state.pwd=password 
             else:
                 st.error("password incorrect")
                
@@ -35,13 +35,23 @@ if "openai_model" not in st.session_state:
     
 if "messages" not in st.session_state:
     st.session_state.messages = []
+    question="what is the name of the 7th book?"
+    answer= "Flashback"
  
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input("What is up?"):
-    st.session_state.messages.append({"role": "user", "content": prompt})
+if prompt := st.chat_input(question):
+    user_answer=prompt
+    full_prompt=f"""
+    the user was asked "{question}".
+    the user answered "{user_answer}".
+    the correct answer is "{answer}".
+    respond by telling the user whether they are substantially correct. 
+    if they are wrong, explain why. 
+    """
+    st.session_state.messages.append({"role": "user", "content": full_prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
