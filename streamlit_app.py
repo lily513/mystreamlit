@@ -17,12 +17,12 @@ import streamlit as st
 
 st.title("ChatGPT-like clone")
 
-if "password" not in st.session_state:
+if "pwd" not in st.session_state:
     with st.form("password"):
         password=st.text_input("password",type="password")
         if st.form_submit_button("submit"):
             if password==st.secrets["PASSWORD"]:
-                st.session_state.password=password
+                st.session_state.pwd=password #need to check if pwd works instead of password.
             else:
                 st.error("password incorrect")
                
