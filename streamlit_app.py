@@ -35,8 +35,8 @@ if "openai_model" not in st.session_state:
     
 if "messages" not in st.session_state:
     st.session_state.messages = []
-    st.session_state.question="what is the name of the 7th book?"
-    st.session_state.answer= "Flashback"
+    st.session_state.question="what are the 4 collective members ?"
+    st.session_state.answer= "The four collective members are Blur, squall,Granite and Mr.Forkle."
  
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
