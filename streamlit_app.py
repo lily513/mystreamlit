@@ -49,6 +49,7 @@ if prompt := st.chat_input(st.session_state.question):
     the user answered "{user_answer}".
     the correct answer is "{st.session_state.answer}".
     respond by telling the user whether they are substantially correct. 
+    ignore capitalization.
     if they are wrong, explain why. 
     """
     st.session_state.messages.append({"role": "user", "content": full_prompt})
