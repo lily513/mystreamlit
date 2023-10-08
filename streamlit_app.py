@@ -51,7 +51,7 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input(st.session_state.questions[st.session_state.number]):
+if prompt := st.text_input(st.session_state.questions[st.session_state.number]):
     user_answer=prompt
     full_prompt=f"""
     the user was asked "{st.session_state.questions[st.session_state.number]}".
