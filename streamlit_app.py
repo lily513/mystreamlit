@@ -35,19 +35,28 @@ if "openai_model" not in st.session_state:
     
 if "messages" not in st.session_state:
     st.session_state.messages = []
-    st.session_state.question="what are the 4 collective members ?" # have to add multiple questions.
-    st.session_state.answer= "The four collective members are Blur, squall,Granite and Mr.Forkle."
+    st.session_state.questions=[
+                               " What are the 5 collective members ?",
+                               " What is Aldens catch phrase?",
+                               " How many levels can you do in foxfire?",
+                               " Who burned down Eternalia?"]
+    st.session_state.answers= [
+        "The four collective members are Blur,wraith,squall,Granite and Mr.Forkle.",
+        "No reason to worry.",
+        "8 levels",
+        "Fintan"]
+    st.session_state.number=0                          
  
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.chat_input(st.session_state.question):
+if prompt := st.chat_input(st.session_state.questions[st.session_state.number]):
     user_answer=prompt
     full_prompt=f"""
-    the user was asked "{st.session_state.question}".
+    the user was asked "{st.session_state.questions[st.session_state.number]}".
     the user answered "{user_answer}".
-    the correct answer is "{st.session_state.answer}".
+    the correct answer is "{st.session_state.answers[st.session_state.number]}".
     respond by telling the user whether they are substantially correct. 
     ignore capitalization.
     order of a list doesnt matter.
@@ -72,5 +81,6 @@ if prompt := st.chat_input(st.session_state.question):
             message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
+    st.session_state+=1
 
 
