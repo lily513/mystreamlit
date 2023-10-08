@@ -35,7 +35,7 @@ if "openai_model" not in st.session_state:
     
 if "messages" not in st.session_state:
     st.session_state.messages = []
-    st.session_state.question="what are the 4 collective members ?"
+    st.session_state.question="what are the 4 collective members ?" # have to add multiple questions.
     st.session_state.answer= "The four collective members are Blur, squall,Granite and Mr.Forkle."
  
 for message in st.session_state.messages:
