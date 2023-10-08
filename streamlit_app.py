@@ -41,7 +41,7 @@ if "messages" not in st.session_state:
                                " How many levels can you do in foxfire?",
                                " Who burned down Eternalia?"]
     st.session_state.answers= [
-        "The four collective members are Blur,wraith,squall,Granite and Mr.Forkle.",
+        "The five collective members are Blur,wraith,squall,Granite and Mr.Forkle.",
         "No reason to worry.",
         "8 levels",
         "Fintan"]
@@ -81,6 +81,6 @@ if prompt := st.chat_input(st.session_state.questions[st.session_state.number]):
             message_placeholder.markdown(full_response + "▌")
         message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
-    st.session_state+=1
+    st.session_state.number+=1
 
 
