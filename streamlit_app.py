@@ -15,7 +15,7 @@ hello this is lily
 import openai
 import streamlit as st
 
-st.title("ChatGPT-like clone")
+st.title("Book Quizzes")
 
 if "pwd" not in st.session_state:
     with st.form("password"):
@@ -61,7 +61,8 @@ if "pwd" in st.session_state:
         respond by telling the user whether they are substantially correct. 
         ignore capitalization or lack of capitalization.
         order of a list doesnt matter.
-        if they are wrong, explain why. 
+        if they are wrong, explain why.
+        Your response should be a json string with the key "correct" having a value of either "Yes" or "No" and the key "reason" having a value of text explaining your reasoning in answering yes or no.
         """
         st.session_state.messages.append({"role": "user", "content": full_prompt})
         with st.chat_message("user"):
