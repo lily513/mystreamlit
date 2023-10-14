@@ -82,5 +82,5 @@ if prompt := st.text_input(st.session_state.questions[st.session_state.number]):
         message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
     st.session_state.number+=1
-    st.text_inputnput(st.session_state.questions[st.session_state.number])
+    st.text_input(st.session_state.questions[st.session_state.number])
 
