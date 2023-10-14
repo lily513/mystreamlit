@@ -51,36 +51,37 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if prompt := st.text_input(st.session_state.questions[st.session_state.number]):
-    user_answer=prompt
-    full_prompt=f"""
-    the user was asked "{st.session_state.questions[st.session_state.number]}".
-    the user answered "{user_answer}".
-    the correct answer is "{st.session_state.answers[st.session_state.number]}".
-    respond by telling the user whether they are substantially correct. 
-    ignore capitalization.
-    order of a list doesnt matter.
-    if they are wrong, explain why. 
-    """
-    st.session_state.messages.append({"role": "user", "content": full_prompt})
-    with st.chat_message("user"):
-        st.markdown(prompt)
-
-    with st.chat_message("assistant"):
-        message_placeholder = st.empty()
-        full_response = ""
-        for response in openai.ChatCompletion.create(
-            model=st.session_state["openai_model"],
-            messages=[
-                {"role": m["role"], "content": m["content"]}
-                for m in st.session_state.messages
-            ],
-            stream=True,
-        ):
-            full_response += response.choices[0].delta.get("content", "")
-            message_placeholder.markdown(full_response + "▌")
-        message_placeholder.markdown(full_response)
-    st.session_state.messages.append({"role": "assistant", "content": full_response})
-    st.session_state.number+=1
-    st.text_input(st.session_state.questions[st.session_state.number])
-
+if "pwd" in st.session_state:
+    if prompt := st.text_input(st.session_state.questions[st.session_state.number]):
+        user_answer=prompt
+        full_prompt=f"""
+        the user was asked "{st.session_state.questions[st.session_state.number]}".
+        the user answered "{user_answer}".
+        the correct answer is "{st.session_state.answers[st.session_state.number]}".
+        respond by telling the user whether they are substantially correct. 
+        ignore capitalization or lack of capitalization.
+        order of a list doesnt matter.
+        if they are wrong, explain why. 
+        """
+        st.session_state.messages.append({"role": "user", "content": full_prompt})
+        with st.chat_message("user"):
+            st.markdown(prompt)
+    
+        with st.chat_message("assistant"):
+            message_placeholder = st.empty()
+            full_response = ""
+            for response in openai.ChatCompletion.create(
+                model=st.session_state["openai_model"],
+                messages=[
+                    {"role": m["role"], "content": m["content"]}
+                    for m in st.session_state.messages
+                ],
+                stream=True,
+            ):
+                full_response += response.choices[0].delta.get("content", "")
+                message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(full_response)
+        st.session_state.messages.append({"role": "assistant", "content": full_response})
+        st.session_state.number+=1
+        st.text_input(st.session_state.questions[st.session_state.number])
+    
