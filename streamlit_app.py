@@ -84,7 +84,7 @@ if "pwd" in st.session_state:
                 message_placeholder.markdown(full_response + "▌")
             message_placeholder.markdown(full_response)
         data=json.loads(full_response)
-        st.write(data['correct'])
+      
         st.session_state.messages.append({"role": "assistant", "content": full_response})
         st.session_state.number+=1
         st.text_input(st.session_state.questions[st.session_state.number])
