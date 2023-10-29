@@ -80,6 +80,7 @@ if "pwd" in st.session_state:
                 ],
                 stream=True,
             ):
+                st.write(response.choices[0].delta.get("content", ""))
                 data=json.loads(response.choices[0].delta.get("content", ""))
                 full_response += data["reason"]
                 message_placeholder.markdown(full_response + "▌")
