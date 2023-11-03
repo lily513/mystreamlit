@@ -78,7 +78,7 @@ if "pwd" in st.session_state:
                     {"role": m["role"], "content": m["content"]}
                     for m in st.session_state.messages
                 ],
-                stream=True,
+                stream=False,
             ):
                  
                 st.write(response.choices[0].delta.get("content", ""))
