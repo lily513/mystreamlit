@@ -12,27 +12,17 @@ forums](https://discuss.streamlit.io).
 In the meantime, below is an example of what you can do with just a few lines of code:
 hello this is lily 
 """
-import openai
+from openai import OpenAI
 import streamlit as st
 import json
 
 st.title("Book Quizzes")
 
-if "pwd" not in st.session_state:
-    with st.form("password"):
-        password=st.text_input("password",type="password")
-        if st.form_submit_button("submit"):
-            if password==st.secrets["PASSWORD"]:
-                st.session_state.pwd=password 
-            else:
-                st.error("password incorrect")
-               
-            
 
-openai.api_key = st.secrets["OPENAI_KEY"]
 
 if "openai_model" not in st.session_state:
     st.session_state["openai_model"] = "gpt-3.5-turbo"
+    st.session_state["client"]=OpenAI(api_key=st.secrets["OPENAI_KEY"])
     
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -53,7 +43,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 if "pwd" in st.session_state:
-    if prompt := st.text_input(st.session_state.questions[st.session_state.number]):
+    if prompt := st.chat_input(st.session_state.questions[st.session_state.number]):
         user_answer=prompt
         full_prompt=f"""
         the user was asked "{st.session_state.questions[st.session_state.number]}".
@@ -71,22 +61,28 @@ if "pwd" in st.session_state:
     
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
-            full_response = ""
-            for response in openai.ChatCompletion.create(
+            #full_response = ""
+            response =st.session_state['client'].chat.completions.create(
                 model=st.session_state["openai_model"],
                 messages=[
                     {"role": m["role"], "content": m["content"]}
                     for m in st.session_state.messages
                 ],
-                stream=False,
-            ):
-                 
-                st.write(response.choices[0].delta.get("content", ""))
-                full_response += response.choices[0].delta.get("content", "")
-                message_placeholder.markdown(full_response + "▌")
-            data= json.loads(full_response)
+            )
+                  
+            data= json.loads(response.choices[0].message.content)
             message_placeholder.markdown(data["reason"])
-        st.session_state.messages.append({"role": "assistant", "content": full_response})
+        st.session_state.messages.append({"role": "assistant", "content": response.choices[0].message.content})
         st.session_state.number+=1
-        st.text_input(st.session_state.questions[st.session_state.number])
-    
+        st.chat_input(st.session_state.questions[st.session_state.number])
+ 
+if "pwd" not in st.session_state:
+    with st.form("password"):
+        password=st.text_input("password",type="password")
+        if st.form_submit_button("submit"):
+            if password==st.secrets["PASSWORD"]:
+                st.session_state.pwd=password 
+            else:
+                st.error("password incorrect")
+               
+
