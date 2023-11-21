@@ -27,7 +27,7 @@ if "openai_model" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
     st.session_state.questions=[
-                               " What are the 5 collective members ?",
+                               " Who are the 5 collective members ?",
                                " What is Aldens catch phrase?",
                                " How many levels can you do in foxfire?",
                                " Who burned down Eternalia?"]
@@ -36,7 +36,8 @@ if "messages" not in st.session_state:
         "No reason to worry.",
         "8 levels",
         "Fintan"]
-    st.session_state.number=0                          
+    st.session_state.number=0 
+    st.session_state.yesnumber=0                         
  
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
@@ -72,8 +73,13 @@ if "pwd" in st.session_state:
                   
             data= json.loads(response.choices[0].message.content)
             message_placeholder.markdown(data["reason"])
+            if data["correct"]== "Yes":
+                st.session_state.yesnumber+=1
         st.session_state.messages.append({"role": "assistant", "content": response.choices[0].message.content})
         st.session_state.number+=1
+        if st.session_state.number==len(st.session_state.questions):
+           message=f'you completed the quiz. You got {st.session_state.yesnumber} crrect'
+           st.session_state.messages.append({"role": "assistant", "content": message}) 
         st.chat_input(st.session_state.questions[st.session_state.number])
  
 if "pwd" not in st.session_state:
